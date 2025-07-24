@@ -8,11 +8,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx ts-node index.ts",
+    "dev": "npx nodemon index.ts",
     "build": "tsc --outDir dist"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
