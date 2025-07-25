@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 
 router.post("/create", async (req, res) => {
     await UserService.createNewUser("test@test.com", "testpassword")
+    res.status(201).send("User created successfully")
 })
 
 router.get("/users", async (req, res) => {

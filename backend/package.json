@@ -9,7 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.ts",
-    "build": "tsc --outDir dist"
+    "build": "tsc --outDir dist",
+    "db-migrate:latest": "ts-node scripts/db-migrate-latest.ts",
+    "db-migrate:create": "ts-node scripts/db-migrate-create-template.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
