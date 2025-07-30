@@ -3,14 +3,15 @@ import { Kysely, sql } from 'kysely'
 export async function up(db: Kysely<any>): Promise<void> {
     await db.schema
         .createTable("user")
-        .addColumn("id", "integer", col => col.primaryKey().autoIncrement().unique())
-        .addColumn("email", "text", col => col.notNull())
+        .addColumn("id", "text", col => col.primaryKey().unique().notNull())
+        .addColumn("username", "text", col => col.notNull().unique())
         .execute()
     
     await db.schema
         .createTable("userAuth")
-        .addColumn("userId", "integer", col => col.references("user.id").primaryKey())
-        .addColumn("password", "text", col => col)
+        .addColumn("userId", "text", col => col.references("user.id").primaryKey())
+        .addColumn("password", "text", col => col.notNull())
+        .addColumn("salt", "text", col => col.notNull())
         .execute()
 }
 

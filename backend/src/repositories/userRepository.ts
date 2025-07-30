@@ -1,23 +1,23 @@
 import {db} from "../database"
 
 
-export async function createUser(email: string) {
+export async function createUser(id: string, username: string) {
     return await db.insertInto('user')
-        .values({email})
+        .values({id, username})
         .executeTakeFirst()
 }
 
-export async function getUserById(id: number) {
+export async function getUserById(id: string) {
     return await db.selectFrom('user')
         .where('id', '=', id)
         .selectAll()
         .executeTakeFirst()
 }
 
-export async function getUserByEmail(email: string) {
+export async function getUserByUsername(username: string) {
     return await db.selectFrom('user')
-        .where('email', '=', email)
-        .select(['id', 'email'])
+        .where('username', '=', username)
+        .selectAll()
         .executeTakeFirst()
 }
 
