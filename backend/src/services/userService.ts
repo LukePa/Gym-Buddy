@@ -2,6 +2,7 @@ import * as UserRepository from '../repositories/userRepository';
 
 export async function createNewUser(email: string, password: string) {
     const user = await UserRepository.createUser({email})
+    
 }
 
 export async function getUserById(id: number) {
