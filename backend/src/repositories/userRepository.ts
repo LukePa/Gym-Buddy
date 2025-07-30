@@ -1,17 +1,23 @@
 import {db} from "../database"
-import {User, UserUpdate, NewUser} from "../database/types/user";
 
-export async function createUser(user: NewUser) {
+
+export async function createUser(email: string) {
     return await db.insertInto('user')
-        .values(user)
-        .returningAll()
-        .executeTakeFirstOrThrow()
+        .values({email})
+        .executeTakeFirst()
 }
 
-export async function getUser(id: number) {
+export async function getUserById(id: number) {
     return await db.selectFrom('user')
         .where('id', '=', id)
         .selectAll()
+        .executeTakeFirst()
+}
+
+export async function getUserByEmail(email: string) {
+    return await db.selectFrom('user')
+        .where('email', '=', email)
+        .select(['id', 'email'])
         .executeTakeFirst()
 }
 
