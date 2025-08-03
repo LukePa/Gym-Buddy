@@ -8,7 +8,14 @@ router.get("/", (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    const verified = await UserAuthService.verifyLogin("test@test.com", "testpassword")
+    const username = req.body.username;
+    const password = req.body.password;
+    
+    if (typeof username !== "string" || typeof password !== "string") {
+        res.status(400).send({error: "Must supply username and password"})
+    }
+    
+    const verified = await UserAuthService.verifyLogin(username, password)
     res.status(200).send(verified)
 })
 

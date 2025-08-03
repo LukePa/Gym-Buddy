@@ -13,7 +13,7 @@ export async function getUserPasswordAndSalt(username: string) {
 
 export async function verifyLogin(username: string, password: string) {
     const passwordAndSalt = await UserAuthRepository.getPasswordAndSaltForUsername(username);
-    if (!passwordAndSalt) throw new Error("User login not found");
+    if (!passwordAndSalt) return false;
     
     const retrievedPassword = passwordAndSalt.password;
     const salt = passwordAndSalt.salt;
