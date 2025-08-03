@@ -2,6 +2,7 @@ import * as UserRepository from '../repositories/userRepository';
 import * as UserAuthService from "./userAuthService";
 import {randomUUID} from "node:crypto";
 import {addUserPassword} from "./userAuthService";
+import jwt from "jsonwebtoken";
 
 export async function createNewUser(username: string, password: string) {
     const id = randomUUID();
@@ -14,6 +15,9 @@ export async function getUserById(id: string) {
     //
 }
 
+export async function getUserByName(name: string) {
+    return await UserRepository.getUserByUsername(name);
+}
 
 // TO REMOVE
 export async function getAllUsers() {

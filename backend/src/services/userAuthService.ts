@@ -1,5 +1,7 @@
 import * as UserAuthRepository from "../repositories/userAuthRepository";
 import {scryptSync, randomBytes} from "node:crypto";
+import jwt from "jsonwebtoken";
+import {getJwtSecret} from "../helpers/configHelpers";
 
 export async function addUserPassword(userId: string, password: string) {
     const salt = randomBytes(16).toString("base64");
@@ -20,4 +22,13 @@ export async function verifyLogin(username: string, password: string) {
     
     const hashedPassword = scryptSync(password, salt, 64).toString("base64");
     return retrievedPassword === hashedPassword;
+}
+
+export async function generateJWT(userId: string) {
+    if (typeof process.env.JWT_SECRET !== "string") throw new Error("Must include JWT_SECRET in env")
+    return jwt.sign({userId}, getJwtSecret(), {expiresIn: "2h"});
+}
+
+export function verifyJwtTokenAndReturnDecoded(jwtToken: string) {
+    return jwt.verify(jwtToken, getJwtSecret());
 }
