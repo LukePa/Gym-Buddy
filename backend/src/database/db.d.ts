@@ -3,6 +3,27 @@
  * Please do not edit it manually.
  */
 
+export interface Exercise {
+  id: string;
+  name: string;
+}
+
+export interface ExerciseMetrics {
+  exerciseId: string;
+  id: string;
+  isTracked: number | null;
+  name: string;
+  targetValue: string | null;
+  units: string | null;
+}
+
+export interface MetricLogs {
+  createdAt: string;
+  id: string;
+  metricId: string;
+  value: string;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -11,10 +32,27 @@ export interface User {
 export interface UserAuth {
   password: string;
   salt: string;
-  userId: string | null;
+  userId: string;
+}
+
+export interface Workout {
+  id: string;
+  name: string;
+  userId: string;
+}
+
+export interface WorkoutExercises {
+  exerciseId: string;
+  id: string;
+  workoutId: string;
 }
 
 export interface DB {
+  exercise: Exercise;
+  exerciseMetrics: ExerciseMetrics;
+  metricLogs: MetricLogs;
   user: User;
   userAuth: UserAuth;
+  workout: Workout;
+  workoutExercises: WorkoutExercises;
 }

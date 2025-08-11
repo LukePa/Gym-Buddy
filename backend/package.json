@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.ts",
+    "build-tsoa": "tsoa spec-and-routes",
     "build": "tsc --outDir dist",
     "db-migrate:latest": "ts-node scripts/db-migrate-latest.ts",
     "db-migrate:create": "ts-node scripts/db-migrate-create-template.ts",
@@ -27,6 +28,7 @@
     "better-sqlite3": "^12.2.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "kysely": "^0.28.3"
+    "kysely": "^0.28.3",
+    "tsoa": "^6.6.0"
   }
 }
