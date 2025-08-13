@@ -19,4 +19,9 @@ export const errorHandler = (err: unknown, req: ExRequest, res: ExResponse, next
             fields: err.fields
         })
     }
+    
+    return res.status(500).json({
+        name: "Error",
+        message: "Something has gone wrong"
+    })
 }

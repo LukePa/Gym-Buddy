@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Route} from "tsoa";
+import {Body, Controller, Post, Route, SuccessResponse} from "tsoa";
 import {CreateUserParams, GetAuthTokenParams} from "../models/requests/auth";
 import * as UserAuthService from "../services/userAuthService";
 import * as UserService from "../services/userService";
@@ -18,24 +18,34 @@ export class ApiError extends Error {
 @Route("/auth")
 export class AuthController extends Controller {
     @Post("GetToken")
-    public async getToken(@Body() body: GetAuthTokenParams): Promise<string> {
+    @SuccessResponse("200")
+    public async getToken(@Body() body: GetAuthTokenParams): Promise<{token: string}> {
         const verified = await UserAuthService.verifyLogin(body.username, body.password)
 
         if (!verified) {
-            //res.status(401).send({error: "Invalid username or password"});
-            throw new ApiError("Invalid Login", 400, "Invalid login credentials")
+            throw new ApiError("Invalid Login", 401, "Invalid login credentials")
         }
 
         const user = await UserService.getUserByName(body.username);
         if (!user) throw new Error();
 
         const jwt = await UserAuthService.generateJWT(user.id)
-        return jwt;
+        
+        this.setStatus(200);
+        return {token: jwt};
         //res.status(200).send(jwt)
     }
     
     @Post("CreateUser")
-    public async createUser(@Body() body: CreateUserParams): Promise<void> {
-        await UserService.createNewUser(body.username, body.password)
+    @SuccessResponse("201", "Created")
+    public async createUser(@Body() body: CreateUserParams): Promise<{created: boolean}> {
+        try {
+            await UserService.createNewUser(body.username, body.password)
+            this.setStatus(201)
+            return {created: true};
+        } catch(e: unknown) {
+            throw new ApiError("Server Error", 500, "Something has gone wrong")
+        }
+        
     }
 }
