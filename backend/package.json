@@ -10,15 +10,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.ts",
     "build": "tsc --outDir dist",
-    "db-migrate:latest": "ts-node scripts/db-migrate-latest.ts",
+    "db-migrate:latest": "ts-node scripts/db-migrate-latest.ts && npm run db-typegen",
     "db-migrate:create": "ts-node scripts/db-migrate-create-template.ts",
-    "db-typegen": "kysely-codegen --dialect sqlite --out-file ./src/database/db.d.ts"
+    "db-typegen": "kysely-codegen --dialect sqlite --out-file ./src/database/db.d.ts",
+    "swagger:build": "ts-node swaggerGen.ts"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "@types/swagger-jsdoc": "^6.0.4",
     "kysely-codegen": "^0.18.5",
     "nodemon": "^3.1.10",
+    "swagger-jsdoc": "^6.2.8",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

@@ -8,6 +8,21 @@ router.get("/", (req, res) => {
     res.send("Auth base route")
 })
 
+/**
+ * @swagger
+ * 
+ * /auth/login:
+ *  post:
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - name: username
+ *            required: true
+ *            type: string
+ *          - name: password
+ *            required: true
+ *            type: string
+ */
 router.post("/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;

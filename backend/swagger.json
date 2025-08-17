@@ -1,0 +1,34 @@
+{
+	"info": {
+		"title": "Gym Buddy REST API",
+		"version": "0.0.1",
+		"description": "API for gym buddy frontend"
+	},
+	"swagger": "2.0",
+	"paths": {
+		"/auth/login": {
+			"post": {
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "username",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "password",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		}
+	},
+	"definitions": {},
+	"responses": {},
+	"parameters": {},
+	"securityDefinitions": {},
+	"tags": []
+}

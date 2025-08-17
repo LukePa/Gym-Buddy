@@ -1,8 +1,11 @@
 import {Router} from "express";
 import * as UserService from "../../services/userService";
 import * as UserAuthService from "../../services/userAuthService";
+import {authenticate} from "../../middleware/authenticate";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get("/", (req, res) => {
     res.send("Users base route")
