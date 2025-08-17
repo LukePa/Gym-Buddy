@@ -4,6 +4,27 @@ import * as UserService from "../../services/userService";
 
 const router = Router();
 
+/**
+ * @swagger
+ * 
+ * /auth/test:
+ *  get:
+ *      produces:
+ *          - application/json
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/definitions/schemas/Test'
+ *      responses:
+ *          200:
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/schemas/Test2'
+ * 
+ */
 router.get("/", (req, res) => {
     res.send("Auth base route")
 })
@@ -15,13 +36,34 @@ router.get("/", (req, res) => {
  *  post:
  *      produces:
  *          - application/json
- *      parameters:
- *          - name: username
- *            required: true
- *            type: string
- *          - name: password
- *            required: true
- *            type: string
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *               
+ *      responses:
+ *          200:
+ *              description: json web token
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                            token:
+ *                              type: string
+ *          401:
+ *              description: Unauthorised
+ *          400:
+ *              description: Invalid request
+ *          
+ *          
  */
 router.post("/login", async (req, res) => {
     const username = req.body.username;
@@ -43,7 +85,9 @@ router.post("/login", async (req, res) => {
     
     const jwt = await UserAuthService.generateJWT(user.id)
     
-    res.status(200).send(jwt)
+    res.status(200).send({token: jwt})
 })
+
+
 
 export default router;

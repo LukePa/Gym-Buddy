@@ -4,29 +4,116 @@
 		"version": "0.0.1",
 		"description": "API for gym buddy frontend"
 	},
+	"servers": [
+		{
+			"url": "http://localhost:5312"
+		}
+	],
 	"swagger": "2.0",
 	"paths": {
+		"/auth/test": {
+			"get": {
+				"produces": [
+					"application/json"
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/definitions/schemas/Test"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/definitions/schemas/Test2"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/auth/login": {
 			"post": {
 				"produces": [
 					"application/json"
 				],
-				"parameters": [
-					{
-						"name": "username",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "password",
-						"required": true,
-						"type": "string"
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								}
+							}
+						}
 					}
-				]
+				},
+				"responses": {
+					"200": {
+						"description": "json web token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid request"
+					},
+					"401": {
+						"description": "Unauthorised"
+					}
+				}
 			}
 		}
 	},
-	"definitions": {},
+	"definitions": {
+		"schemas": {
+			"Test": {
+				"type": "object",
+				"properties": {
+					"property1": {
+						"type": "string"
+					},
+					"property2": {
+						"type": "string"
+					}
+				}
+			},
+			"Test2": {
+				"type": "object",
+				"properties": {
+					"property3": {
+						"type": "string"
+					},
+					"property4": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
 	"responses": {},
 	"parameters": {},
 	"securityDefinitions": {},
