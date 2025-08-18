@@ -7,7 +7,7 @@ const router = Router();
 /**
  * @swagger
  * 
- * /auth/test:
+ * /account/test:
  *  get:
  *      produces:
  *          - application/json
@@ -32,21 +32,14 @@ router.get("/", (req, res) => {
 /**
  * @swagger
  * 
- * /auth/login:
+ * /account/login:
  *  post:
- *      produces:
- *          - application/json
  *      requestBody:
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
- *                      type: object
- *                      properties:
- *                          username:
- *                              type: string
- *                          password:
- *                              type: string
+ *                      $ref: '#/definitions/requests/UsernamePassword'
  *               
  *      responses:
  *          200:
@@ -66,21 +59,26 @@ router.get("/", (req, res) => {
  *          
  */
 router.post("/login", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    
-    if (typeof username !== "string" || typeof password !== "string") {
-        res.status(400).send({error: "Must supply username and password"})
+    let formattedRequest: UsernamePasswordRequest;
+    try {
+        formattedRequest = UsernamePasswordRequest.fromRequestBody(req.body)
+    } catch(e) {
+        res.status(400)
+            .send({error: UsernamePasswordRequest.failMessage})
+        return;
     }
     
-    const verified = await UserAuthService.verifyLogin(username, password)
+    const verified = await UserAuthService.verifyLogin(
+        formattedRequest.username,
+        formattedRequest.password
+    )
     
     if (!verified) {
         res.status(401).send({error: "Invalid username or password"});
         return;
     }
     
-    const user = await UserService.getUserByName(username);
+    const user = await UserService.getUserByName(formattedRequest.username);
     if (!user) throw new Error();
     
     const jwt = await UserAuthService.generateJWT(user.id)
@@ -88,6 +86,44 @@ router.post("/login", async (req, res) => {
     res.status(200).send({token: jwt})
 })
 
-
+/**
+ * @swagger
+ * 
+ * /account/create:
+ *  post:
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/definitions/requests/UsernamePassword'
+ *      responses:
+ *          201:
+ *              description: User created
+ *              type: string
+ *              content:
+ *                  text/plain:
+ *                      schema:
+ *                          type: string              
+ *          400:
+ *              description: Invalid request
+ *              content:
+ *                  text/plain:
+ *                      schema:
+ *                          type: string
+ */
+router.post("/create", async (req, res) => {
+    let formattedRequest: UsernamePasswordRequest;
+    try {
+        formattedRequest = UsernamePasswordRequest.fromRequestBody(req.body)
+    } catch(e) {
+        res.status(400)
+            .send({error: UsernamePasswordRequest.failMessage})
+        return;
+    }
+    
+    await UserService.createNewUser(formattedRequest.username, formattedRequest.password)
+    res.status(201).send("User created successfully")
+})
 
 export default router;

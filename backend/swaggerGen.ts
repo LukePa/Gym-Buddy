@@ -5,7 +5,7 @@ import definition from "./swaggerDefinition";
 
 const options = {
     definition,
-    apis: ['./src/routes/**/*.ts', './src/entities/**/*.ts']
+    apis: ['./src/routes/**/*.ts', './src/entities/**/*.ts', './src/requestTypes/**/*.ts']
 }
 
 const spec = swaggerJSDoc(options);

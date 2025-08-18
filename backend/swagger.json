@@ -11,7 +11,7 @@
 	],
 	"swagger": "2.0",
 	"paths": {
-		"/auth/test": {
+		"/account/test": {
 			"get": {
 				"produces": [
 					"application/json"
@@ -39,25 +39,14 @@
 				}
 			}
 		},
-		"/auth/login": {
+		"/account/login": {
 			"post": {
-				"produces": [
-					"application/json"
-				],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"username": {
-										"type": "string"
-									},
-									"password": {
-										"type": "string"
-									}
-								}
+								"$ref": "#/definitions/requests/UsernamePassword"
 							}
 						}
 					}
@@ -86,6 +75,43 @@
 					}
 				}
 			}
+		},
+		"/account/create": {
+			"post": {
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/definitions/requests/UsernamePassword"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "User created",
+						"type": "string",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid request",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"definitions": {
@@ -109,6 +135,21 @@
 					},
 					"property4": {
 						"type": "string"
+					}
+				}
+			}
+		},
+		"requests": {
+			"UsernamePassword": {
+				"type": "object",
+				"properties": {
+					"username": {
+						"type": "string",
+						"required": true
+					},
+					"password": {
+						"type": "string",
+						"required": true
 					}
 				}
 			}
