@@ -7,6 +7,7 @@ const router = Router();
 
 router.use(authenticate);
 
+// TODO: Remove this, this is only here for testing stuff
 router.get("/", (req, res) => {
     res.send("Users base route")
 })
@@ -18,11 +19,10 @@ router.get("/users", async (req, res) => {
     res.status(200).send(users);
 })
 
+// TODO: REMOVE
 router.get("/test", async (req, res) => {
     const t = await UserAuthService.getUserPasswordAndSalt("test@test.com")
     res.status(200).send(t);
 })
-
-router
 
 export default router;

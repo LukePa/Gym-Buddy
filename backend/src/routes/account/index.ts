@@ -4,6 +4,7 @@ import * as UserService from "../../services/userService";
 
 const router = Router();
 
+// TODO: REMOVE
 /**
  * @swagger
  * 
@@ -25,9 +26,10 @@ const router = Router();
  *                          $ref: '#/definitions/schemas/Test2'
  * 
  */
-router.get("/", (req, res) => {
-    res.send("Auth base route")
-})
+//TODO: REMOVE
+// router.get("/", (req, res) => {
+//     res.send("Auth base route")
+// })
 
 /**
  * @swagger
