@@ -1,24 +1,19 @@
 import {Router} from "express";
 import * as UserAuthService from "../../services/userAuthService";
 import * as UserService from "../../services/userService";
-import {UsernamePasswordRequest} from "../../requestTypes/account/usernamePassword";
-import {RequestTest} from "@gym-buddy/requestresponsetypes/requests/test";
+import {UsernamePasswordRequestMapper} from "../../requestTypes/account/usernamePassword";
+import type {LoginRequest} from "@gym-buddy/requestresponsetypes/requests/account";
+import type {LoginResponse} from "@gym-buddy/requestresponsetypes/responses/account";
 
 const router = Router();
 
-// TESTING
-router.post("/test", async (req, res) => {
-    const response: RequestTest = {prop1: "test prop"};
-    res.status(200).send({body: response})
-})
-
 router.post("/login", async (req, res) => {
-    let formattedRequest: UsernamePasswordRequest;
+    let formattedRequest: LoginRequest;
     try {
-        formattedRequest = UsernamePasswordRequest.fromRequestBody(req.body)
+        formattedRequest = UsernamePasswordRequestMapper.fromRequestBody(req.body);
     } catch(e) {
         res.status(400)
-            .send({error: UsernamePasswordRequest.failMessage})
+            .send({error: UsernamePasswordRequestMapper.failMessage})
         return;
     }
     
@@ -36,17 +31,17 @@ router.post("/login", async (req, res) => {
     if (!user) throw new Error();
     
     const jwt = await UserAuthService.generateJWT(user.id)
-    
-    res.status(200).send({token: jwt})
+    const response: LoginResponse = {token: jwt};
+    res.status(200).send(response)
 })
 
 router.post("/create", async (req, res) => {
-    let formattedRequest: UsernamePasswordRequest;
+    let formattedRequest: UsernamePasswordRequestMapper;
     try {
-        formattedRequest = UsernamePasswordRequest.fromRequestBody(req.body)
+        formattedRequest = UsernamePasswordRequestMapper.fromRequestBody(req.body)
     } catch(e) {
         res.status(400)
-            .send({error: UsernamePasswordRequest.failMessage})
+            .send({error: UsernamePasswordRequestMapper.failMessage})
         return;
     }
     

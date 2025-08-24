@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
-    "./requests/test": "./request/requestTest.d.ts",
-    "./responses/*": "./response/*.d.ts"
+    "./requests/*": "./requests/*.d.ts",
+    "./responses/*": "./responses/*.d.ts",
+    "./entities/*": "./entities/*.d.ts"
   }
 }

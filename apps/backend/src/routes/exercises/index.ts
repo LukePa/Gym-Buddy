@@ -1,9 +1,17 @@
 import {Router} from "express";
 import {authenticate} from "../../middleware/authenticate";
+import {RequestTest} from "@gym-buddy/requestresponsetypes/requests/requestTest";
+
 
 const router = Router();
 
 router.use(authenticate);
+
+// TESTING
+router.post("/test", async (req, res) => {
+    const response: RequestTest = {prop1: "test prop"};
+    res.status(200).send({body: response})
+})
 
 router.get("/", (req, res) => {
     console.log(req.userId)

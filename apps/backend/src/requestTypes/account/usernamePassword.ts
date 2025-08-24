@@ -1,5 +1,6 @@
+import {LoginRequest} from "@gym-buddy/requestresponsetypes/requests/account";
 
-export class UsernamePasswordRequest {
+export class UsernamePasswordRequestMapper {
     static failMessage = "Must supply username and password";
     
     username: string
@@ -11,7 +12,7 @@ export class UsernamePasswordRequest {
     }
     
     
-    static fromRequestBody(body: any): UsernamePasswordRequest {
+    static fromRequestBody(body: any): LoginRequest {
         const username = body.username;
         const password = body.password;
 
@@ -19,7 +20,7 @@ export class UsernamePasswordRequest {
             throw new Error("Invalid body for UsernamePasswordRequest")
         }
         
-        return new UsernamePasswordRequest(username, password);
+        return new UsernamePasswordRequestMapper(username, password);
     }
     
 }
