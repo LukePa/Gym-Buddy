@@ -2,8 +2,15 @@ import {Router} from "express";
 import * as UserAuthService from "../../services/userAuthService";
 import * as UserService from "../../services/userService";
 import {UsernamePasswordRequest} from "../../requestTypes/account/usernamePassword";
+import {RequestTest} from "@gym-buddy/requestresponsetypes/requests/test";
 
 const router = Router();
+
+// TESTING
+router.post("/test", async (req, res) => {
+    const response: RequestTest = {prop1: "test prop"};
+    res.status(200).send({body: response})
+})
 
 router.post("/login", async (req, res) => {
     let formattedRequest: UsernamePasswordRequest;

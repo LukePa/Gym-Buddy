@@ -15,6 +15,7 @@
     "db-typegen": "kysely-codegen --dialect sqlite --out-file ./src/database/db.d.ts"
   },
   "devDependencies": {
+    "@gym-buddy/requestresponsetypes": "workspace:*",
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
@@ -22,11 +23,11 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "kysely-codegen": "^0.18.5",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "@gym-buddy/requestresponsetypes": "*"
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "kysely": "^0.28.3"

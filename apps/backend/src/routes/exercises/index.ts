@@ -1,12 +1,10 @@
 import {Router} from "express";
 import {authenticate} from "../../middleware/authenticate";
-import {RequestTest} from "@gym-buddy/requestresponsetypes/requests/test"
 
 const router = Router();
 
 router.use(authenticate);
 
-// TODO: Add swagger docs
 router.get("/", (req, res) => {
     console.log(req.userId)
     res.send("Get users exercises")
