@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {authenticate} from "../../middleware/authenticate";
+import {RequestTest} from "@gym-buddy/requestresponsetypes/requests/test"
 
 const router = Router();
 

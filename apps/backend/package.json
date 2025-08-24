@@ -1,5 +1,5 @@
 {
-  "name": "gym-buddy-backend",
+  "name": "@gym-buddy/backend",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -9,11 +9,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.ts",
-    "build": "tsc --outDir dist",
-    "db-migrate:latest": "ts-node scripts/db-migrate-latest.ts && npm run db-typegen",
-    "db-migrate:create": "ts-node scripts/db-migrate-create-template.ts",
-    "db-typegen": "kysely-codegen --dialect sqlite --out-file ./src/database/db.d.ts",
-    "swagger:build": "ts-node swaggerGen.ts"
+    "build": "npx tsc --outDir dist",
+    "db-migrate:latest": "npx ts-node scripts/db-migrate-latest.ts && npm run db-typegen",
+    "db-migrate:create": "npx ts-node scripts/db-migrate-create-template.ts",
+    "db-typegen": "kysely-codegen --dialect sqlite --out-file ./src/database/db.d.ts"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
@@ -23,7 +22,8 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "kysely-codegen": "^0.18.5",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "@gym-buddy/requestresponsetypes": "*"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
