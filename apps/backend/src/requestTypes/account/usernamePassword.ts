@@ -1,19 +1,5 @@
-/**
- * @swagger
- * 
- * definitions:
- *  requests:
- *      UsernamePassword:
- *          type: object
- *          properties:
- *              username:
- *                  type: string
- *                  required: true
- *              password:
- *                  type: string
- *                  required: true
- */
-class UsernamePasswordRequest {
+
+export class UsernamePasswordRequest {
     static failMessage = "Must supply username and password";
     
     username: string
