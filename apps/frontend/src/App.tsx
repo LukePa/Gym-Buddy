@@ -1,3 +1,4 @@
+import {createContext, useEffect, useState} from "react";
 
 
 function App() {
@@ -9,6 +10,13 @@ function App() {
         console.log(body)
     }
     
+    const [currentAuthToken, setAuthToken] = useState("");
+    useEffect(() => {
+        //Store auth token
+    }, [currentAuthToken])
+    
+    const AuthTokenContext = createContext<string>("");
+    
     
     return (
         <>
@@ -16,7 +24,10 @@ function App() {
             <p>My frontend</p>
               <button onClick={buttonClick}>Do something</button>
           </div>
-        
+            
+            <AuthTokenContext value={currentAuthToken}>
+                
+            </AuthTokenContext>
         </>
     )
 }

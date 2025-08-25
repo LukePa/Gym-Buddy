@@ -1,19 +1,23 @@
 import {Router} from "express";
 import * as UserAuthService from "../../services/userAuthService";
 import * as UserService from "../../services/userService";
-import {UsernamePasswordRequestMapper} from "../../requestTypes/account/usernamePassword";
-import type {LoginRequest} from "@gym-buddy/requestresponsetypes/requests/account";
-import type {LoginResponse} from "@gym-buddy/requestresponsetypes/responses/account";
+import {PostLoginRequestMapper, PostLoginResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/routes/account/PostLogin"
+import type {PostCreateRequest, PostLoginRequest} from "@gym-buddy/requestresponsetypes/models/requests/account";
+import {
+    PostCreateRequestMapper,
+    PostCreateResponseMapper
+} from "@gym-buddy/requestresponsetypes/mappers/routes/account/PostCreate";
+import {ErrorResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/errorResponse";
 
 const router = Router();
 
 router.post("/login", async (req, res) => {
-    let formattedRequest: LoginRequest;
+    let formattedRequest: PostLoginRequest;
     try {
-        formattedRequest = UsernamePasswordRequestMapper.fromRequestBody(req.body);
+        formattedRequest = PostLoginRequestMapper.fromAny(req.body);
     } catch(e) {
         res.status(400)
-            .send({error: UsernamePasswordRequestMapper.failMessage})
+            .send(ErrorResponseMapper.create("Invalid request shape for account/login"))
         return;
     }
     
@@ -23,7 +27,7 @@ router.post("/login", async (req, res) => {
     )
     
     if (!verified) {
-        res.status(401).send({error: "Invalid username or password"});
+        res.status(401).send(ErrorResponseMapper.create("Invalid username or password"));
         return;
     }
     
@@ -31,22 +35,30 @@ router.post("/login", async (req, res) => {
     if (!user) throw new Error();
     
     const jwt = await UserAuthService.generateJWT(user.id)
-    const response: LoginResponse = {token: jwt};
+    const response = PostLoginResponseMapper.create(jwt);
     res.status(200).send(response)
 })
 
 router.post("/create", async (req, res) => {
-    let formattedRequest: UsernamePasswordRequestMapper;
+    let formattedRequest: PostCreateRequest;
     try {
-        formattedRequest = UsernamePasswordRequestMapper.fromRequestBody(req.body)
+        formattedRequest = PostCreateRequestMapper.fromAny(req.body)
     } catch(e) {
         res.status(400)
-            .send({error: UsernamePasswordRequestMapper.failMessage})
+            .send(ErrorResponseMapper.create("Invalid request shape for account/create"));
         return;
     }
     
-    await UserService.createNewUser(formattedRequest.username, formattedRequest.password)
-    res.status(201).send("User created successfully")
+    const hasExistingUser = await UserService.hasExistingUser(formattedRequest.username);
+    
+    if (hasExistingUser) {
+        res.status(400)
+            .send({error: "Can not have duplicate username"})
+    }
+    
+    const id = await UserService.createNewUser(formattedRequest.username, formattedRequest.password)
+    const token = await UserAuthService.generateJWT(id);
+    res.status(201).send(PostCreateResponseMapper.create(token))
 })
 
 export default router;

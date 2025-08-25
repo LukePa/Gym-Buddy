@@ -9,8 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
-    "./requests/*": "./requests/*.d.ts",
-    "./responses/*": "./responses/*.d.ts",
-    "./entities/*": "./entities/*.d.ts"
+    "./models/requests/*": "./models/requests/*.d.ts",
+    "./models/responses/*": "./models/responses/*.d.ts",
+    "./models/entities/*": "./models/entities/*.d.ts",
+    "./mappers/routes/*": "./mappers/routes/*.ts",
+    "./mappers/entities/*": "./mappers/entities/*.ts",
+    "./mappers/errorResponse": "./mappers/shared/ErrorResponseMapper.ts"
   }
 }

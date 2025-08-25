@@ -1,13 +1,17 @@
 import * as UserRepository from '../repositories/userRepository';
 import * as UserAuthService from "./userAuthService";
 import {randomUUID} from "node:crypto";
-import {addUserPassword} from "./userAuthService";
-import jwt from "jsonwebtoken";
 
-export async function createNewUser(username: string, password: string) {
+export async function createNewUser(username: string, password: string): Promise<string> {
     const id = randomUUID();
     await UserRepository.createUser(id, username);
     await UserAuthService.addUserPassword(id, password);
+    return id;
+}
+
+export async function hasExistingUser(username: string): Promise<boolean> {
+    const existingUser = await UserRepository.getUserByUsername(username);
+    return Boolean(existingUser);
 }
 
 export async function getUserById(id: string) {
