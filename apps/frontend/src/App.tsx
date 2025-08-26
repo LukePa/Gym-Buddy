@@ -1,19 +1,14 @@
 import {createContext, useEffect, useState} from "react";
+import PostLogin from "./requests/accounts/postLogin.js";
 
 
 function App() {
     const buttonClick = async () => {
-        const t = await fetch("http://localhost:5312/exercises/test", {
-            method: "post"
-        })
-        const body = t.json();
-        console.log(body)
+        const t = await PostLogin("test", "test123")
+        console.log(t)
     }
     
     const [currentAuthToken, setAuthToken] = useState("");
-    useEffect(() => {
-        //Store auth token
-    }, [currentAuthToken])
     
     const AuthTokenContext = createContext<string>("");
     
