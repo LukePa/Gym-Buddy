@@ -9,3 +9,8 @@ export interface PostLoginResponse {
 export interface PostCreateResponse {
     token: string;
 }
+
+
+export interface PostRefreshResponse {
+    token: string;
+}

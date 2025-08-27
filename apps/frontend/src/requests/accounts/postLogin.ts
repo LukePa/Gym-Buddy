@@ -15,10 +15,10 @@ export default async function(username: string, password: string): Promise<PostL
     
     const body = await res.json();
     
-    if (res.status < 200 || res.status > 299) {
+    if (res.ok) {
+        return PostLoginResponseMapper.fromAny(body);
+    } else {
         const errorResponse = ErrorResponseMapper.fromAny(body);
         throw new Error(errorResponse.error);
-    } else {
-        return PostLoginResponseMapper.fromAny(body);
     }
 }

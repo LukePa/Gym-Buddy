@@ -8,3 +8,5 @@ export interface PostCreateRequest {
     username: string;
     password: string;
 }
+
+export interface PostRefreshRequest {}

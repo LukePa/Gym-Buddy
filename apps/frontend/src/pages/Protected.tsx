@@ -2,10 +2,12 @@ import type {JSX} from "react";
 import {getLocalAuthToken} from "../helpers/auth.js";
 import {Navigate} from "react-router";
 import {Outlet} from "react-router";
+import getUser from "../singleton/user.js";
 
 
 function Protected () {
-    const token = getLocalAuthToken();
+    const user = getUser();
+    const token = user.getAuthToken();
     
     if (!token) return <Navigate to="/auth/login" replace />
     
@@ -13,4 +15,4 @@ function Protected () {
 } 
 
 
-export default WithAuth
+export default Protected

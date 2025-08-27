@@ -8,6 +8,8 @@ import {
     PostCreateResponseMapper
 } from "@gym-buddy/requestresponsetypes/mappers/routes/account/PostCreate";
 import {ErrorResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/errorResponse";
+import {authenticate} from "../../middleware/authenticate";
+import {PostRefreshResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/routes/account/PostRefresh";
 
 const router = Router();
 
@@ -61,4 +63,14 @@ router.post("/create", async (req, res) => {
     res.status(201).send(PostCreateResponseMapper.create(token))
 })
 
+router.post("/refresh", authenticate, async (req, res) => {
+    const userId = req.userId;
+    if (!userId) {
+        res.status(400).send(ErrorResponseMapper.create("No matching user found"));
+        return;
+    }
+
+    const token = await UserAuthService.generateJWT(userId);
+    res.status(200).send(PostRefreshResponseMapper.create(token))
+})
 export default router;
