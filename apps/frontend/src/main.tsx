@@ -4,13 +4,21 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import Login from "./pages/auth/Login.tsx";
 import Register from "./pages/auth/Register.tsx";
 import Protected from "./pages/Protected.tsx";
-import App from "./App.tsx";
 import getUser from "./singleton/user.js";
+import Workouts from "./pages/workouts/index.js";
+import Exercises from "./pages/exercises/index.js";
+import Root from "./pages/Root.js";
+
+import "./styles/variables.css";
+import "./styles/global.css";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />
+        Component: Protected,
+        children: [
+            {index: true, Component: Root}
+        ]
     },
     {
         path: "auth",
@@ -20,12 +28,18 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: "test",
+        path: "workouts",
         Component: Protected,
         children: [
-            {index: true, element: <p>You must be authenticated to see this!</p>}
+            {index: true, Component: Workouts}
         ]
-        
+    },
+    {
+        path: "exercises",
+        Component: Protected,
+        children: [
+            {index: true, Component: Exercises}
+        ]
     }
 ])
 
