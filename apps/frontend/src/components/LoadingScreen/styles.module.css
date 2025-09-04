@@ -1,18 +1,14 @@
 
-.banner {
-    background: var(--primary-colour);
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 0;
-}
-
-.title {
-    color: var(--neutral-light-colour);
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.body {
+    flex-direction: column;
     flex: 1;
+}
+
+.text {
+    font-size: 0.8rem;
+    color: var(--neutral-light-colour);
+    font-weight: bold;
 }

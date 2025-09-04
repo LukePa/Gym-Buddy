@@ -6,29 +6,27 @@ const router = Router();
 
 router.use(authenticate);
 
-// TESTING
+
 router.get("/", (req, res) => {
-    console.log(req.userId)
-    res.send("Get users exercises")
+    res.send("Get all exercises")
 })
 
 router.get("/:id", (req, res) => {
     res.send("Get specific exercise")
 })
 
-router.get("/:id/metrics", (req, res) => {
-    res.send("Get all metrics for an exercise")
-})
-
 router.post("/", (req, res) => {
-    // Optionally include new metrics?
     res.send("Create new exercise")
 })
 
-router.post("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
     res.send("Edit exercise")
 })
 
+
+router.delete("/:id", (req, res) => {
+    res.send("Delete exercise")
+})
 
 
 export default router;

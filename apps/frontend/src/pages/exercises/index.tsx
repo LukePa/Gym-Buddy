@@ -1,5 +1,11 @@
+import BanneredPage from "../../components/BanneredPage/index.js";
+import ExercisesPageBody from "./ExercisesPageBody.js";
 
 
 export default function Exercises() {
-    return <p>Exercises</p>
+    return (
+        <BanneredPage>
+            <ExercisesPageBody />
+        </BanneredPage>
+    )
 }

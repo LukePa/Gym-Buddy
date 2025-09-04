@@ -9,6 +9,7 @@ export default function BanneredPage({children}: PropsWithChildren) {
             <div className={styles.banner}>
                 <span className={styles.title}>Gym Buddy</span>
             </div>
+            
             {children}
         </Page>
     )

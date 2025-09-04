@@ -1,9 +1,5 @@
 import {DB} from "./db";
-import SQLite from "better-sqlite3"
-import {Kysely, SqliteDialect} from "kysely";
-
-const dialect = new SqliteDialect({
-    database: new SQLite("database.sqlite")
-})
+import {Kysely} from "kysely";
+import dialect from "./dbDialect";
 
 export const db = new Kysely<DB>({dialect})

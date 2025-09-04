@@ -4,10 +4,10 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import Login from "./pages/auth/Login.tsx";
 import Register from "./pages/auth/Register.tsx";
 import Protected from "./pages/Protected.tsx";
-import getUser from "./singleton/user.js";
-import Workouts from "./pages/workouts/index.js";
-import Exercises from "./pages/exercises/index.js";
-import Root from "./pages/Root.js";
+import getUser from "./singleton/user.ts";
+import Workouts from "./pages/workouts/index.tsx";
+import Exercises from "./pages/exercises/index.tsx";
+import Root from "./pages/Root/index.tsx";
 
 import "./styles/variables.css";
 import "./styles/global.css";

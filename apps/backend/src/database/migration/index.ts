@@ -2,9 +2,12 @@ import * as path from 'path'
 import { promises as fs } from 'fs'
 import {
     Migrator,
-    FileMigrationProvider,
+    FileMigrationProvider, Kysely,
 } from 'kysely'
-import {db} from "../index";
+import dialect from "../dbDialect";
+
+
+const db = new Kysely({dialect})
 
 export async function migrateToLatest() {
     const migrator = new Migrator({

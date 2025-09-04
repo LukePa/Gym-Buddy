@@ -1,0 +1,9 @@
+.accentButton {
+    background: var(--accent-colour);
+    color: var(--neutral-light-colour);
+    border: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    padding: 5px 0;
+}
+

@@ -1,0 +1,21 @@
+
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 10px 10px 0 10px;
+    align-items: stretch;
+}
+
+.startWorkoutButtonWrapper {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
