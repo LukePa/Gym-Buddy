@@ -1,7 +1,7 @@
 import {GetExercisesRequest} from "../../../models/requests/exercises";
 import {GetExercisesResponse} from "../../../models/responses/exercises";
-import Exercise from "../../../models/entities/exercise";
-import ExerciseMapper from "../../entities/ExerciseMapper";
+import {ExerciseWithId} from "../../../models/entities/exercise";
+import ExerciseWithIdMapper from "../../entities/ExerciseWithIdMapper";
 
 
 export class GetExercisesRequestMapper {
@@ -16,13 +16,13 @@ export class GetExercisesRequestMapper {
 
 
 export class GetExercisesResponseMapper {
-    static create(exercises: Array<Exercise>): GetExercisesResponse {
+    static create(exercises: Array<ExerciseWithId>): GetExercisesResponse {
         return exercises;
     }
     
     static fromAny(input: any): GetExercisesResponse {
         if(!Array.isArray(input)) throw new Error("Can not map GetExerciseResponse on non array");
         
-        return input.map(ExerciseMapper.fromAny);
+        return input.map(ExerciseWithIdMapper.fromAny);
     }
 }

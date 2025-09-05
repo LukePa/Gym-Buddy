@@ -28,28 +28,19 @@ export async function up(db: Kysely<any>): Promise<void> {
         .execute()
 
     await db.schema
+        .createTable("exerciseMetrics")
+        .addColumn("exerciseId", "text", col => col.notNull().references("exercise.id"))
+        .addColumn("name", "text", col => col.notNull())
+        .addColumn("targetValue", "float4")
+        .addColumn("units", "text")
+        .addPrimaryKeyConstraint("primary_key", ['exerciseId', 'name'])
+        .execute()
+    
+    await db.schema
         .createTable("workoutExercises")
         .addColumn("id", "text", col => col.primaryKey().notNull().unique())
         .addColumn("workoutId", "text", col => col.notNull().references("workout.id"))
         .addColumn("exerciseId", "text", col => col.notNull().references("exercise.id"))
-        .execute()
-
-    await db.schema
-        .createTable("exerciseMetrics")
-        .addColumn("id", "text", col => col.primaryKey().unique().notNull())
-        .addColumn("exerciseId", "text", col => col.notNull().references("exercise.id"))
-        .addColumn("targetValue", "float4")
-        .addColumn("units", "text")
-        .addColumn("name", "text", col => col.notNull())
-        .addColumn("isTracked", "boolean")
-        .execute()
-
-    await db.schema
-        .createTable("metricLogs")
-        .addColumn("id", "text", col => col.primaryKey().unique().notNull())
-        .addColumn("metricId", "text", col => col.notNull().references("exerciseMetrics.id"))
-        .addColumn("value", "float4", col => col.notNull())
-        .addColumn("createdAt", "timestamp", col => col.notNull())
         .execute()
 
 }

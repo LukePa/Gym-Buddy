@@ -1,8 +1,14 @@
 import Metric from "./metric";
 
 
-export default interface Exercise {
-    id: string;
+export interface ExerciseWithoutId {
     name: string;
     metrics?: Array<Metric>
 }
+
+export interface ExerciseWithId extends  ExerciseWithoutId {
+    id: string;
+}
+
+
+

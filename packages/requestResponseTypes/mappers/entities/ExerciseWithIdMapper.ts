@@ -1,10 +1,10 @@
-import Exercise from "../../models/entities/exercise";
+import {ExerciseWithId} from "../../models/entities/exercise";
 import Metric from "../../models/entities/metric";
 import MetricMapper from "./MetricMapper";
 
 
-export default class ExerciseMapper {
-    static create(id: string, name: string, metrics?: Array<Metric>): Exercise {
+export default class ExerciseWithIdMapper {
+    static create(id: string, name: string, metrics?: Array<Metric>): ExerciseWithId {
         return {
             id,
             name,
@@ -12,7 +12,7 @@ export default class ExerciseMapper {
         }
     }
     
-    static fromAny(input: any): Exercise {
+    static fromAny(input: any): ExerciseWithId {
         if(!input.id || !input.name) throw new Error("Can not map exercise without name or id")
         
         return {

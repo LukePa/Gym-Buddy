@@ -10,18 +10,9 @@ export interface Exercise {
 
 export interface ExerciseMetrics {
   exerciseId: string;
-  id: string;
-  isTracked: number | null;
   name: string;
   targetValue: string | null;
   units: string | null;
-}
-
-export interface MetricLogs {
-  createdAt: string;
-  id: string;
-  metricId: string;
-  value: string;
 }
 
 export interface User {
@@ -50,7 +41,6 @@ export interface WorkoutExercises {
 export interface DB {
   exercise: Exercise;
   exerciseMetrics: ExerciseMetrics;
-  metricLogs: MetricLogs;
   user: User;
   userAuth: UserAuth;
   workout: Workout;

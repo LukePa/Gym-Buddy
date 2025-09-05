@@ -1,9 +1,7 @@
 
 
 export default interface Metric {
-    id: string;
     name: string;
-    isTracked?: boolean;
-    targetValue?: string;
+    targetValue?: number;
     units?: string;
 }

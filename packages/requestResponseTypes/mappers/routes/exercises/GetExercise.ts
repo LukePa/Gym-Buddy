@@ -1,5 +1,5 @@
 import {GetExerciseRequest} from "../../../models/requests/exercises";
-import ExerciseMapper from "../../entities/ExerciseMapper";
+import ExerciseWithIdMapper from "../../entities/ExerciseWithIdMapper";
 import {GetExerciseResponse} from "../../../models/responses/exercises";
 import Metric from "../../../models/entities/metric";
 
@@ -17,10 +17,10 @@ export class GetExerciseRequestMapper {
 
 export class GetExerciseResponseMapper {
     static create(id: string, name: string, metrics?: Array<Metric>): GetExerciseResponse {
-        return ExerciseMapper.create(id, name);
+        return ExerciseWithIdMapper.create(id, name);
     }
     
     static fromAny(input: any): GetExerciseResponse {
-        return ExerciseMapper.fromAny(input)
+        return ExerciseWithIdMapper.fromAny(input)
     }
 }
