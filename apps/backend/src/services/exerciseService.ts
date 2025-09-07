@@ -3,36 +3,23 @@ import Exercise from "../entities/exercise";
 
 export default class ExerciseService {
     
-    static async createExercise(exercise: Exercise): Promise<string> {
-        return await ExerciseRepository.createExerciseFromEntity(exercise);
+    static async createExercise(exercise: Exercise, userId: string): Promise<string> {
+        return await ExerciseRepository.createExerciseFromEntityForUser(exercise, userId);
     }
     
-    static async getAllExercises(): Promise<Exercise[]> {
-        return await ExerciseRepository.getAllExercises();
+    static async getAllExercisesForUser(userId: string): Promise<Exercise[]> {
+        return await ExerciseRepository.getAllExercisesForUser(userId);
     }
     
-    static async getExerciseById(id: string): Promise<Exercise | null> {
-        return await ExerciseRepository.getExerciseById(id);
+    static async getExerciseByIdForUser(id: string, userId: string): Promise<Exercise | null> {
+        return await ExerciseRepository.getExerciseByIdForUser(id, userId);
     }
     
-    static async updateExercise(id: string, exercise: Exercise): Promise<void> {
-        // Check if exercise exists
-        const existingExercise = await ExerciseRepository.getExerciseById(id);
-        if (!existingExercise) {
-            throw new Error("Exercise not found");
-        }
-        
-        await ExerciseRepository.updateExerciseFromEntity(id, exercise);
+    static async updateExercise(id: string, exercise: Exercise, userId: string): Promise<void> {
+        await ExerciseRepository.updateExerciseFromEntityForUser(id, exercise, userId);
     }
     
-    static async deleteExercise(id: string): Promise<void> {
-        // Check if exercise exists
-        const existingExercise = await ExerciseRepository.getExerciseById(id);
-        if (!existingExercise) {
-            throw new Error("Exercise not found");
-        }
-        
-        // Delete from database
-        await ExerciseRepository.deleteExercise(id);
+    static async deleteExerciseForUser(id: string, userId: string): Promise<void> {
+        await ExerciseRepository.deleteExerciseForUser(id, userId);
     }
 }

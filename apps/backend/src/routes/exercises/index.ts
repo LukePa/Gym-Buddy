@@ -36,7 +36,13 @@ router.use(authenticate);
 // GET /exercises - Get all exercises
 router.get("/", async (req, res) => {
     try {
-        const exercises = await ExerciseService.getAllExercises();
+        const userId = req.userId;
+        if (!userId) {
+            res.status(500).send(ErrorResponseMapper.create("User ID not found in request"));
+            return;
+        }
+        
+        const exercises = await ExerciseService.getAllExercisesForUser(userId);
         const response = GetExercisesResponseMapper.create(
             exercises.map(exercise => ExerciseMapper.toDtoType(exercise))
         );
@@ -50,7 +56,13 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const exercise = await ExerciseService.getExerciseById(id);
+        const userId = req.userId;
+        if (!userId) {
+            res.status(500).send(ErrorResponseMapper.create("User ID not found in request"));
+            return;
+        }
+        
+        const exercise = await ExerciseService.getExerciseByIdForUser(id, userId);
         
         if (!exercise) {
             res.status(404).send(ErrorResponseMapper.create("Exercise not found"));
@@ -96,7 +108,7 @@ router.post("/", async (req, res) => {
             );
         }
         
-        const exerciseId = await ExerciseService.createExercise(exercise);
+        const exerciseId = await ExerciseService.createExercise(exercise, userId);
         
         // If workoutId is provided, add exercise to workout
         if (formattedRequest.workoutId) {
@@ -150,7 +162,7 @@ router.put("/:id", async (req, res) => {
             );
         }
         
-        await ExerciseService.updateExercise(id, exercise);
+        await ExerciseService.updateExercise(id, exercise, userId);
         
         // If workoutId is provided, add exercise to workout
         if (formattedRequest.workoutId) {
@@ -183,8 +195,13 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
+        const userId = req.userId;
+        if (!userId) {
+            res.status(500).send(ErrorResponseMapper.create("User ID not found in request"));
+            return;
+        }
         
-        await ExerciseService.deleteExercise(id);
+        await ExerciseService.deleteExerciseForUser(id, userId);
         const response = DeleteExerciseResponseMapper.create();
         res.status(200).send(response);
     } catch (error) {

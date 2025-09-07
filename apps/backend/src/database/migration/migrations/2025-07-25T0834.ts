@@ -25,6 +25,7 @@ export async function up(db: Kysely<any>): Promise<void> {
         .createTable("exercise")
         .addColumn("id", "text", col => col.primaryKey().notNull().unique())
         .addColumn("name", "text", col => col.notNull())
+        .addColumn("userId", "text", col => col.notNull().references("user.id"))
         .execute()
 
     await db.schema

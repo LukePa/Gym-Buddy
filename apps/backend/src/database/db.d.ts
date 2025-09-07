@@ -6,6 +6,7 @@
 export interface Exercise {
   id: string;
   name: string;
+  userId: string;
 }
 
 export interface ExerciseMetrics {

@@ -84,6 +84,17 @@ export default class WorkoutRepository {
     }
     
     static async updateWorkoutFromEntity(id: string, workout: Workout, userId: string): Promise<void> {
+        // First check if the workout exists and belongs to the user
+        const existingWorkout = await db.selectFrom("workout")
+            .selectAll()
+            .where("id", "=", id)
+            .where("userId", "=", userId)
+            .executeTakeFirst();
+        
+        if (!existingWorkout) {
+            throw new Error("Workout not found");
+        }
+        
         // Update workout
         await db.updateTable("workout")
             .set({ name: workout.name })
@@ -112,6 +123,17 @@ export default class WorkoutRepository {
     }
     
     static async deleteWorkout(id: string, userId: string): Promise<void> {
+        // First check if the workout exists and belongs to the user
+        const existingWorkout = await db.selectFrom("workout")
+            .selectAll()
+            .where("id", "=", id)
+            .where("userId", "=", userId)
+            .executeTakeFirst();
+        
+        if (!existingWorkout) {
+            throw new Error("Workout not found");
+        }
+        
         // Delete workout exercises first (foreign key constraint)
         await db.deleteFrom("workoutExercises")
             .where("workoutId", "=", id)
@@ -136,10 +158,11 @@ export default class WorkoutRepository {
             throw new Error("Workout not found or access denied");
         }
         
-        // Verify exercise exists
+        // Verify exercise exists and belongs to user
         const exercise = await db.selectFrom("exercise")
             .select("id")
             .where("id", "=", exerciseId)
+            .where("userId", "=", userId)
             .executeTakeFirst();
         
         if (!exercise) {

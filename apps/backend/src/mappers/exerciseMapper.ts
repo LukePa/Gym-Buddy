@@ -9,10 +9,11 @@ export default class ExerciseMapper {
         return new Exercise(input.id, input.name);
     }
     
-    static toDbType(exercise: Exercise): ExerciseDBType {
+    static toDbType(exercise: Exercise, userId?: string): ExerciseDBType {
         return {
             id: exercise.id,
-            name: exercise.name
+            name: exercise.name,
+            userId: userId || "" // Will be set by repository
         }
     }
     

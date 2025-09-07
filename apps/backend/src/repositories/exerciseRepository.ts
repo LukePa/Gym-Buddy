@@ -7,8 +7,8 @@ import {ExerciseWithoutId} from "@gym-buddy/requestresponsetypes/models/entities
 
 export default class ExerciseRepository {
     
-    static async createExerciseFromEntity(exercise: Exercise): Promise<string> {
-        const dbObject = ExerciseMapper.toDbType(exercise);
+    static async createExerciseFromEntityForUser(exercise: Exercise, userId: string): Promise<string> {
+        const dbObject = ExerciseMapper.toDbType(exercise, userId);
         
         const result = await db.insertInto("exercise")
             .values(dbObject)
@@ -29,11 +29,23 @@ export default class ExerciseRepository {
         return result.id;
     }
     
-    static async updateExerciseFromEntity(id: string, exercise: Exercise): Promise<void> {
+    static async updateExerciseFromEntityForUser(id: string, exercise: Exercise, userId: string): Promise<void> {
+        // First check if the exercise exists and belongs to the user
+        const existingExercise = await db.selectFrom("exercise")
+            .selectAll()
+            .where("id", "=", id)
+            .where("userId", "=", userId)
+            .executeTakeFirst();
+        
+        if (!existingExercise) {
+            throw new Error("Exercise not found");
+        }
+        
         // Update exercise
         await db.updateTable("exercise")
-            .set({ name: exercise.name })
+            .set(ExerciseMapper.toDbType(exercise, userId))
             .where("id", "=", id)
+            .where("userId", "=", userId)
             .execute();
         
         // Delete existing metrics
@@ -47,9 +59,10 @@ export default class ExerciseRepository {
         }
     }
     
-    static async getAllExercises(): Promise<Exercise[]> {
+    static async getAllExercisesForUser(userId: string): Promise<Exercise[]> {
         const exercises = await db.selectFrom("exercise")
             .selectAll()
+            .where("userId", "=", userId)
             .execute();
         
         const result: Exercise[] = [];
@@ -66,10 +79,11 @@ export default class ExerciseRepository {
         return result;
     }
     
-    static async getExerciseById(id: string): Promise<Exercise | null> {
+    static async getExerciseByIdForUser(id: string, userId: string): Promise<Exercise | null> {
         const exercise = await db.selectFrom("exercise")
             .selectAll()
             .where("id", "=", id)
+            .where("userId", "=", userId)
             .executeTakeFirst();
         
         if (!exercise) {
@@ -84,13 +98,14 @@ export default class ExerciseRepository {
         return exerciseEntity;
     }
     
-    static async deleteExercise(id: string): Promise<void> {
+    static async deleteExerciseForUser(id: string, userId: string): Promise<void> {
         // Delete metrics first (foreign key constraint)
         await MetricRepository.removeAllMetricsForExercise(id);
         
         // Delete exercise
         await db.deleteFrom("exercise")
             .where("id", "=", id)
+            .where("userId", "=", userId)
             .execute();
     }
 }
