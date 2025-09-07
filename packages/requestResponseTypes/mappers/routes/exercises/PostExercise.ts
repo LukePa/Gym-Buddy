@@ -5,12 +5,19 @@ import ExerciseWithoutIdMapper from "../../entities/ExerciseWithoutIdMapper";
 
 
 export class PostExerciseRequestMapper {
-    static create(exercise: ExerciseWithoutId): PostExerciseRequest {
-        return exercise;
+    static create(exercise: ExerciseWithoutId, workoutId?: string): PostExerciseRequest {
+        return {
+            ...exercise,
+            workoutId
+        };
     }
     
     static fromAny(input: any): PostExerciseRequest {
-        return ExerciseWithoutIdMapper.fromAny(input);
+        const exercise = ExerciseWithoutIdMapper.fromAny(input);
+        return {
+            ...exercise,
+            workoutId: input.workoutId
+        };
     }
 }
 

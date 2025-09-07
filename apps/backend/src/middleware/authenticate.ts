@@ -22,7 +22,10 @@ export const authenticate: RequestHandler = (req, res, next)=>  {
     }
     
     const userId = token.userId;
-    if (!userId || typeof userId !== "string") throw new Error("Invalid user id in token")
+    if (!userId || typeof userId !== "string") {
+        res.status(500).send({error: "Invalid user id in token"});
+        return;
+    }
     
     req.userId = userId;
     

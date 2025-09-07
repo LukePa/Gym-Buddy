@@ -1,8 +1,13 @@
 import {Router} from "express";
 import {authenticate} from "../../middleware/authenticate";
 import ExerciseService from "../../services/exerciseService";
+import WorkoutService from "../../services/workoutService";
 import ExerciseMapper from "../../mappers/exerciseMapper";
+import Exercise from "../../entities/exercise";
+import MetricMapper from "../../mappers/metricMapper";
 import {ErrorResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/errorResponse";
+import ExerciseWithoutIdMapper from "@gym-buddy/requestresponsetypes/mappers/entities/ExerciseWithoutIdMapper";
+import { randomUUID } from "node:crypto";
 import {
     GetExercisesRequestMapper,
     GetExercisesResponseMapper
@@ -74,7 +79,41 @@ router.post("/", async (req, res) => {
             return;
         }
         
-        const exerciseId = await ExerciseService.createExercise(formattedRequest);
+        const userId = req.userId;
+        if (!userId) {
+            res.status(500).send(ErrorResponseMapper.create("User ID not found in request"));
+            return;
+        }
+        
+        // Generate ID and create exercise entity
+        const id = randomUUID();
+        const exercise = new Exercise(id, formattedRequest.name);
+        
+        // Map metrics from DTOs to entities
+        if (formattedRequest.metrics && formattedRequest.metrics.length > 0) {
+            exercise.metrics = formattedRequest.metrics.map(metricDto => 
+                MetricMapper.fromDtoType(metricDto, id)
+            );
+        }
+        
+        const exerciseId = await ExerciseService.createExercise(exercise);
+        
+        // If workoutId is provided, add exercise to workout
+        if (formattedRequest.workoutId) {
+            try {
+                await WorkoutService.addExerciseToWorkout(formattedRequest.workoutId, exerciseId, userId);
+            } catch (error) {
+                // If adding to workout fails, return error response
+                if (error instanceof Error && error.message === "Workout not found") {
+                    res.status(404).send(ErrorResponseMapper.create("Workout not found"));
+                    return;
+                } else {
+                    res.status(500).send(ErrorResponseMapper.create("Failed to add exercise to workout"));
+                    return;
+                }
+            }
+        }
+        
         const response = PostExerciseResponseMapper.create();
         res.status(201).send(response);
     } catch (error) {
@@ -87,6 +126,12 @@ router.put("/:id", async (req, res) => {
     try {
         const { id } = req.params;
         
+        const userId = req.userId;
+        if (!userId) {
+            res.status(500).send(ErrorResponseMapper.create("User ID not found in request"));
+            return;
+        }
+        
         let formattedRequest;
         try {
             formattedRequest = PutExerciseRequestMapper.fromAny(req.body);
@@ -95,7 +140,34 @@ router.put("/:id", async (req, res) => {
             return;
         }
         
-        await ExerciseService.updateExercise(id, formattedRequest);
+        // Create exercise entity from DTO
+        const exercise = new Exercise(id, formattedRequest.name);
+        
+        // Map metrics from DTOs to entities
+        if (formattedRequest.metrics && formattedRequest.metrics.length > 0) {
+            exercise.metrics = formattedRequest.metrics.map(metricDto => 
+                MetricMapper.fromDtoType(metricDto, id)
+            );
+        }
+        
+        await ExerciseService.updateExercise(id, exercise);
+        
+        // If workoutId is provided, add exercise to workout
+        if (formattedRequest.workoutId) {
+            try {
+                await WorkoutService.addExerciseToWorkout(formattedRequest.workoutId, id, userId);
+            } catch (error) {
+                // If adding to workout fails, return error response
+                if (error instanceof Error && error.message === "Workout not found") {
+                    res.status(404).send(ErrorResponseMapper.create("Workout not found"));
+                    return;
+                } else {
+                    res.status(500).send(ErrorResponseMapper.create("Failed to add exercise to workout"));
+                    return;
+                }
+            }
+        }
+        
         const response = PutExerciseResponseMapper.create();
         res.status(200).send(response);
     } catch (error) {

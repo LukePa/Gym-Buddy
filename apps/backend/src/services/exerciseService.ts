@@ -1,16 +1,10 @@
 import ExerciseRepository from "../repositories/exerciseRepository";
 import Exercise from "../entities/exercise";
-import {ExerciseWithoutId} from "@gym-buddy/requestresponsetypes/models/entities/exercise";
-import { randomUUID } from "node:crypto";
 
 export default class ExerciseService {
     
-    static async createExercise(exerciseData: ExerciseWithoutId): Promise<string> {
-        // Generate a unique ID for the exercise
-        const id = randomUUID();
-        
-        // Save to database (repository handles metric creation)
-        return await ExerciseRepository.createExerciseFromDto(exerciseData, id);
+    static async createExercise(exercise: Exercise): Promise<string> {
+        return await ExerciseRepository.createExerciseFromEntity(exercise);
     }
     
     static async getAllExercises(): Promise<Exercise[]> {
@@ -21,15 +15,14 @@ export default class ExerciseService {
         return await ExerciseRepository.getExerciseById(id);
     }
     
-    static async updateExercise(id: string, exerciseData: ExerciseWithoutId): Promise<void> {
+    static async updateExercise(id: string, exercise: Exercise): Promise<void> {
         // Check if exercise exists
         const existingExercise = await ExerciseRepository.getExerciseById(id);
         if (!existingExercise) {
             throw new Error("Exercise not found");
         }
         
-        // Update in database (repository handles metric manipulation)
-        await ExerciseRepository.updateExerciseFromDto(id, exerciseData);
+        await ExerciseRepository.updateExerciseFromEntity(id, exercise);
     }
     
     static async deleteExercise(id: string): Promise<void> {

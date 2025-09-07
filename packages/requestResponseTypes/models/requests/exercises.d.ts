@@ -5,8 +5,12 @@ export interface GetExercisesRequest {}
 
 export interface GetExerciseRequest {}
 
-export interface PostExerciseRequest extends ExerciseWithoutId {}
+export interface PostExerciseRequest extends ExerciseWithoutId {
+    workoutId?: string;
+}
 
-export interface PutExerciseRequest extends ExerciseWithoutId {}
+export interface PutExerciseRequest extends ExerciseWithoutId {
+    workoutId?: string;
+}
 
 export interface DeleteExerciseRequest {}

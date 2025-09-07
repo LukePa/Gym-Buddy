@@ -7,9 +7,7 @@ import {ExerciseWithoutId} from "@gym-buddy/requestresponsetypes/models/entities
 
 export default class ExerciseRepository {
     
-    static async createExerciseFromDto(exerciseData: ExerciseWithoutId, id: string): Promise<string> {
-        // Create the exercise entity without metrics
-        const exercise = new Exercise(id, exerciseData.name);
+    static async createExerciseFromEntity(exercise: Exercise): Promise<string> {
         const dbObject = ExerciseMapper.toDbType(exercise);
         
         const result = await db.insertInto("exercise")
@@ -22,9 +20,8 @@ export default class ExerciseRepository {
         }
         
         // Handle metrics if they exist
-        if (exerciseData.metrics && exerciseData.metrics.length > 0) {
-            for (const metricDto of exerciseData.metrics) {
-                const metric = MetricMapper.fromDtoType(metricDto, id);
+        if (exercise.metrics && exercise.metrics.length > 0) {
+            for (const metric of exercise.metrics) {
                 await MetricRepository.createMetric(metric);
             }
         }
@@ -32,10 +29,10 @@ export default class ExerciseRepository {
         return result.id;
     }
     
-    static async updateExerciseFromDto(id: string, exerciseData: ExerciseWithoutId): Promise<void> {
+    static async updateExerciseFromEntity(id: string, exercise: Exercise): Promise<void> {
         // Update exercise
         await db.updateTable("exercise")
-            .set({ name: exerciseData.name })
+            .set({ name: exercise.name })
             .where("id", "=", id)
             .execute();
         
@@ -43,9 +40,8 @@ export default class ExerciseRepository {
         await MetricRepository.removeAllMetricsForExercise(id);
         
         // Insert new metrics if they exist
-        if (exerciseData.metrics && exerciseData.metrics.length > 0) {
-            for (const metricDto of exerciseData.metrics) {
-                const metric = MetricMapper.fromDtoType(metricDto, id);
+        if (exercise.metrics && exercise.metrics.length > 0) {
+            for (const metric of exercise.metrics) {
                 await MetricRepository.createMetric(metric);
             }
         }

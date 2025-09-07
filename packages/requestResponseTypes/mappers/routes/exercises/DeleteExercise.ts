@@ -2,7 +2,7 @@ import {DeleteExerciseRequest} from "../../../models/requests/exercises";
 import {DeleteExerciseResponse} from "../../../models/responses/exercises";
 
 
-export class PostExerciseRequestMapper {
+export class DeleteExerciseRequestMapper {
     static create(): DeleteExerciseRequest {
         return {};
     }
@@ -12,7 +12,7 @@ export class PostExerciseRequestMapper {
     }
 }
 
-export class PostExerciseResponseMapper {
+export class DeleteExerciseResponseMapper {
     static create(): DeleteExerciseResponse {
         return {};
     }

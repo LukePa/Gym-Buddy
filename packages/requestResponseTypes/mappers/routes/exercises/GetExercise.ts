@@ -17,7 +17,7 @@ export class GetExerciseRequestMapper {
 
 export class GetExerciseResponseMapper {
     static create(id: string, name: string, metrics?: Array<Metric>): GetExerciseResponse {
-        return ExerciseWithIdMapper.create(id, name);
+        return ExerciseWithIdMapper.create(id, name, metrics);
     }
     
     static fromAny(input: any): GetExerciseResponse {
