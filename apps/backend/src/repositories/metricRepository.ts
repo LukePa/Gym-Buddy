@@ -14,6 +14,12 @@ export default class MetricRepository {
         return values.map(MetricMapper.fromDbType);
     }
     
+    static async removeAllMetricsForExercise(exerciseId: string) {
+        await db.deleteFrom("exerciseMetrics")
+            .where("exerciseId", "=", exerciseId)
+            .execute()
+    }
+    
     static async removeMetrics(exerciseId: string, names: Array<string>) {
         await db.deleteFrom("exerciseMetrics")
             .where("exerciseId", "=", exerciseId)
