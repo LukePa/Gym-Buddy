@@ -1,5 +1,6 @@
-import {getLocalAuthToken, setLocalAuthToken} from "../helpers/auth.js";
+import {clearLocalAuthToken, getLocalAuthToken, setLocalAuthToken} from "../helpers/auth.js";
 import PostRefresh from "../requests/accounts/postRefresh.js";
+import PostLogin from "../requests/accounts/postLogin.js";
 
 
 class User {
@@ -11,13 +12,18 @@ class User {
         setLocalAuthToken(token);
     }
     
-    // async login(username: string, password: string) {
-    //    
-    // }
+    async login(username: string, password: string) {
+        const res = await PostLogin(username, password);
+        this.setAuthToken(res.token);
+    }
 
     async refreshToken() {
         const refreshResponse = await PostRefresh();
         this.setAuthToken(refreshResponse.token);
+    }
+    
+    clear() {
+        clearLocalAuthToken();
     }
 }
 

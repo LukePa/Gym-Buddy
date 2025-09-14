@@ -11,6 +11,8 @@ import Root from "./pages/Root/index.tsx";
 
 import "./styles/variables.css";
 import "./styles/global.css";
+import "./styles/text.css";
+import ErrorPage from "./pages/error/index.js";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +42,11 @@ const router = createBrowserRouter([
         children: [
             {index: true, Component: Exercises}
         ]
+    },
+    {
+        path: "error",
+        Component: ErrorPage,
+        index: true
     }
 ])
 

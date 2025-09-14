@@ -6,9 +6,8 @@ function Login() {
     const navigate = useNavigate();
 
     const loginClick = async () => {
-        const t = await PostLogin("test", "test123")
         const user = getUser();
-        user.setAuthToken(t.token);
+        await user.login("test", "test123");
         navigate("/")
     }
     

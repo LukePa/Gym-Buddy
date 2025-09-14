@@ -7,3 +7,7 @@ export function getLocalAuthToken(): string | null {
 export function setLocalAuthToken(token: string) {
     sessionStorage.setItem("jwt", token);
 }
+
+export function clearLocalAuthToken() {
+    sessionStorage.clear();
+}
