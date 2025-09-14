@@ -1,7 +1,7 @@
 import {GetExerciseRequest} from "../../../models/requests/exercises";
 import ExerciseWithIdMapper from "../../entities/ExerciseWithIdMapper";
 import {GetExerciseResponse} from "../../../models/responses/exercises";
-import Metric from "../../../models/entities/metric";
+import {Metric} from "../../../models/entities/metric";
 
 
 export class GetExerciseRequestMapper {

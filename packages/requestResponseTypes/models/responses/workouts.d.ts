@@ -7,7 +7,7 @@ export interface GetWorkoutResponse extends WorkoutWithId {}
 
 export interface GetWorkoutExercisesResponse extends Array<ExerciseWithId> {}
 
-export interface PostWorkoutResponse {}
+export interface PostWorkoutResponse extends WorkoutWithId {}
 
 export interface PutWorkoutResponse {}
 

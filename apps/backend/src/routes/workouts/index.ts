@@ -125,7 +125,7 @@ router.post("/", async (req, res) => {
         workout.exerciseIds = formattedRequest.exerciseIds;
         
         const workoutId = await WorkoutService.createWorkout(workout);
-        const response = PostWorkoutResponseMapper.create();
+        const response = PostWorkoutResponseMapper.create(workoutId, workout.name, workout.exerciseIds ?? []);
         res.status(201).send(response);
     } catch (error) {
         res.status(500).send(ErrorResponseMapper.create("Failed to create workout"));

@@ -1,7 +1,8 @@
 import {PostExerciseRequest} from "../../../models/requests/exercises";
 import {PostExerciseResponse} from "../../../models/responses/exercises";
-import {ExerciseWithoutId} from "../../../models/entities/exercise";
+import {ExerciseWithId, ExerciseWithoutId} from "../../../models/entities/exercise";
 import ExerciseWithoutIdMapper from "../../entities/ExerciseWithoutIdMapper";
+import ExerciseWithIdMapper from "../../entities/ExerciseWithIdMapper.ts";
 
 
 export class PostExerciseRequestMapper {
@@ -22,11 +23,11 @@ export class PostExerciseRequestMapper {
 }
 
 export class PostExerciseResponseMapper {
-    static create(): PostExerciseResponse {
-        return {};
+    static create(exercise: ExerciseWithId): PostExerciseResponse {
+        return ExerciseWithIdMapper.create(exercise.id, exercise.name, exercise.metrics);
     }
     
     static fromAny(input: any): PostExerciseResponse {
-        return {};
+        return ExerciseWithIdMapper.fromAny(input);
     }
 }

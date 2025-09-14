@@ -126,7 +126,7 @@ router.post("/", async (req, res) => {
             }
         }
         
-        const response = PostExerciseResponseMapper.create();
+        const response = PostExerciseResponseMapper.create(ExerciseMapper.toDtoType(exercise));
         res.status(201).send(response);
     } catch (error) {
         res.status(500).send(ErrorResponseMapper.create("Failed to create exercise"));

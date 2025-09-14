@@ -2,6 +2,7 @@ import {PostWorkoutRequest} from "../../../models/requests/workouts";
 import {PostWorkoutResponse} from "../../../models/responses/workouts";
 import {WorkoutWithoutId} from "../../../models/entities/workout";
 import WorkoutWithoutIdMapper from "../../entities/WorkoutWithoutIdMapper";
+import WorkoutWithIdMapper from "../../entities/WorkoutWithIdMapper.ts";
 
 export class PostWorkoutRequestMapper {
     static create(workout: WorkoutWithoutId): PostWorkoutRequest {
@@ -14,11 +15,11 @@ export class PostWorkoutRequestMapper {
 }
 
 export class PostWorkoutResponseMapper {
-    static create(): PostWorkoutResponse {
-        return {};
+    static create(id: string, name: string, exerciseIds: Array<string>): PostWorkoutResponse {
+        return WorkoutWithIdMapper.create(id, name, exerciseIds);
     }
     
     static fromAny(input: any): PostWorkoutResponse {
-        return {};
+        return WorkoutWithIdMapper.fromAny(input);
     }
 }

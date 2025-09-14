@@ -1,4 +1,5 @@
 import {GlobalDataManager} from "../data/globalDataManager.js";
+import ApiRepository from "../data/apiRepository.js";
 
 
 let globalDataManager: GlobalDataManager | undefined;
@@ -6,7 +7,8 @@ let globalDataManager: GlobalDataManager | undefined;
 
 export default function getGlobalDataManager(): GlobalDataManager {
     if (!globalDataManager) {
-        globalDataManager = new GlobalDataManager({});
+        const apiRepository = new ApiRepository();
+        globalDataManager = new GlobalDataManager(apiRepository);
     }
     
     return globalDataManager;

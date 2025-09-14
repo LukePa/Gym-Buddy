@@ -5,5 +5,4 @@ export interface WorkoutWithoutId {
 
 export interface WorkoutWithId extends WorkoutWithoutId {
     id: string;
-    userId: string;
 }
