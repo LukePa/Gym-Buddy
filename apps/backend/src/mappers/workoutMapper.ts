@@ -16,7 +16,7 @@ export default class WorkoutMapper {
     }
     
     static fromDtoType(dto: WorkoutDTO): Workout {
-        const workout = new Workout(dto.id, dto.name, dto.userId);
+        const workout = new Workout(dto.id, dto.name);
         workout.exerciseIds = dto.exerciseIds;
         return workout;
     }

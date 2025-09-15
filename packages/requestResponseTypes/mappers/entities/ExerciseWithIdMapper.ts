@@ -1,5 +1,5 @@
 import {ExerciseWithId} from "../../models/entities/exercise";
-import Metric from "../../models/entities/metric";
+import {Metric} from "../../models/entities/metric";
 import MetricMapper from "./MetricMapper";
 
 

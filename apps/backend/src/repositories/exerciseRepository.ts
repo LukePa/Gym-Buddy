@@ -4,6 +4,7 @@ import ExerciseMapper from "../mappers/exerciseMapper";
 import MetricRepository from "./metricRepository";
 import MetricMapper from "../mappers/metricMapper";
 import {ExerciseWithoutId} from "@gym-buddy/requestresponsetypes/models/entities/exercise";
+import WorkoutRepository from "./workoutRepository.ts";
 
 export default class ExerciseRepository {
     
@@ -98,6 +99,12 @@ export default class ExerciseRepository {
         return exerciseEntity;
     }
     
+    static async removeExerciseFromAllWorkouts(exerciseId: string): Promise<void> {
+        await db.deleteFrom("workoutExercises")
+            .where("exerciseId", "=", exerciseId)
+            .execute()
+    }
+    
     static async deleteExerciseForUser(id: string, userId: string): Promise<void> {
         // Delete metrics first (foreign key constraint)
         await MetricRepository.removeAllMetricsForExercise(id);
@@ -107,5 +114,7 @@ export default class ExerciseRepository {
             .where("id", "=", id)
             .where("userId", "=", userId)
             .execute();
+        
+        await this.removeExerciseFromAllWorkouts(id);
     }
 }

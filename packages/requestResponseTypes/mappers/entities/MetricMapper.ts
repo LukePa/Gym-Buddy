@@ -1,4 +1,4 @@
-import type Metric from "../../models/entities/metric";
+import type {Metric} from "../../models/entities/metric";
 
 export default class MetricMapper {
     static create(name: string): Metric {

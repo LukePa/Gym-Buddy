@@ -43,7 +43,7 @@ export class GlobalDataManager {
         return [...this._workouts];
     }
     
-    async updateExercise(exerciseToUpdate: Exercise) {
+    async updateExercise(exerciseToUpdate: Exercise, workoutId?: string) {
         if (!this._exercises) this._exercises = [exerciseToUpdate];
         
         await this.repository.updateExercise(exerciseToUpdate);
@@ -57,6 +57,16 @@ export class GlobalDataManager {
                 this._exercises[matchingExerciseIndex] = exerciseToUpdate;
             } else {
                 this._exercises.push(exerciseToUpdate);
+            }
+        }
+        
+        if (workoutId && this._workouts) {
+            const matchingWorkout = this._workouts.find(w => {
+                return w.id === workoutId;
+            })
+            
+            if (matchingWorkout && !matchingWorkout.exercises.includes(exerciseToUpdate.id)) {
+                matchingWorkout.exercises.push(exerciseToUpdate.id);
             }
         }
     }
@@ -84,6 +94,12 @@ export class GlobalDataManager {
         this._exercises?.filter(exercise => {
             return exercise.id !== exerciseID;
         })
+        
+        this._workouts?.forEach(workout => {
+            workout.exercises = workout.exercises.filter(id => {
+                return id !== exerciseID;
+            })
+        })
     }
     
     async deleteWorkout(workoutId: string) {
@@ -93,10 +109,20 @@ export class GlobalDataManager {
         })
     }
     
-    async createExercise(name: string, metrics: Array<Metric>) {
+    async createExercise(name: string, metrics: Array<Metric>, workoutId?: string) {
         const exercise = await this.repository.createExercise(name, metrics);
         if (!this._exercises) this._exercises = [];
         this._exercises.push(exercise);
+
+        if (workoutId && this._workouts) {
+            const matchingWorkout = this._workouts.find(w => {
+                return w.id === workoutId;
+            })
+
+            if (matchingWorkout && !matchingWorkout.exercises.includes(exercise.id)) {
+                matchingWorkout.exercises.push(exercise.id);
+            }
+        }
     }
     
     async createWorkout(name: string, exerciseIDs: Array<string>) {

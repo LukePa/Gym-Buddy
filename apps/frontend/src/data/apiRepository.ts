@@ -5,6 +5,13 @@ import getExercises from "../requests/exercises/getExercises.ts";
 import Metric from "../entities/metric.js";
 import postExercise from "../requests/exercises/postExercise.ts";
 import putExercise from "../requests/exercises/putExercise.js";
+import {PostExerciseRequest, PutExerciseRequest} from "@gym-buddy/requestresponsetypes/models/requests/exercises";
+import getWorkouts from "../requests/workouts/getWorkouts.js";
+import putWorkout from "../requests/workouts/putWorkout.js";
+import deleteExercise from "../requests/exercises/deleteExercise.js";
+import {PostWorkoutRequest} from "@gym-buddy/requestresponsetypes/models/requests/workouts";
+import postWorkout from "../requests/workouts/postWorkout.js";
+import deleteWorkout from "../requests/workouts/deleteWorkout.js";
 
 
 export default class ApiRepository implements IRepository {
@@ -12,33 +19,44 @@ export default class ApiRepository implements IRepository {
         const getExercisesResponse = await getExercises();
         return getExercisesResponse.map(Exercise.fromExerciseWithIdDTO);
     }
-    getAllWorkouts(): Promise<Array<Workout>> {
-        throw new Error("Method not implemented.");
+    async getAllWorkouts(): Promise<Array<Workout>> {
+        const response = await getWorkouts();
+        return response.map(Workout.fromDTO);
     }
-    async updateExercise(exercise: Exercise): Promise<void> {
-        await putExercise(exercise.id, exercise.toExerciseWithoutIDDTO());
+    async updateExercise(exercise: Exercise, workoutId?: string): Promise<void> {
+        const request: PutExerciseRequest = exercise.toExerciseWithoutIDDTO();
+        if (workoutId) request.workoutId = workoutId;
+        await putExercise(exercise.id, request);
         return;
     }
-    updateWorkout(workout: Workout): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateWorkout(workout: Workout): Promise<void> {
+        await putWorkout(workout.id, workout.toDTOWithoutId())
     }
-    deleteExercise(exerciseID: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteExercise(exerciseID: string): Promise<void> {
+        await deleteExercise(exerciseID);
     }
-    deleteWorkout(workoutID: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteWorkout(workoutID: string): Promise<void> {
+        await deleteWorkout(workoutID);
     }
     
-    async createExercise(name: string, metrics: Array<Metric>): Promise<Exercise> {
-        const response = await postExercise({
-            name, 
-            metrics: metrics.map(metric => metric.toDTO())
-        });
+    async createExercise(name: string, metrics: Array<Metric>, workoutId?: string): Promise<Exercise> {
+        const request: PostExerciseRequest = {
+            name,
+            metrics: metrics.map(metric => metric.toDTO()),
+            workoutId
+        }
+        const response = await postExercise(request);
         
         return Exercise.fromExerciseWithIdDTO(response);
     }
     
-    createWorkout(name: string, exerciseIds: Array<string>): Promise<Workout> {
-        throw new Error("Method not implimented")
+    async createWorkout(name: string, exerciseIds: Array<string>): Promise<Workout> {
+        const request: PostWorkoutRequest = {
+            name,
+            exerciseIds
+        }
+        
+        const res = await postWorkout(request);
+        return Workout.fromDTO(res);
     }
 }

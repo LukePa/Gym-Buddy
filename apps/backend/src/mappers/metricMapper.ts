@@ -1,6 +1,6 @@
 import {Metric} from "../entities/metric";
 import {ExerciseMetrics} from "../database/db";
-import MetricDTO from "@gym-buddy/requestresponsetypes/models/entities/metric";
+import {Metric as MetricDTO} from "@gym-buddy/requestresponsetypes/models/entities/metric";
 
 
 export default class MetricMapper {

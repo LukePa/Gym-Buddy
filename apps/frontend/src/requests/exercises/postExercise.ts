@@ -1,11 +1,9 @@
-import {GetExercisesResponse, PostExerciseResponse} from "@gym-buddy/requestresponsetypes/models/responses/exercises";
+import {PostExerciseResponse} from "@gym-buddy/requestresponsetypes/models/responses/exercises";
 import {PostExerciseRequest} from "@gym-buddy/requestresponsetypes/models/requests/exercises";
 import performAuthenticatedRequest from "../performAuthenticatedRequest.js";
 import {getApiUrl} from "../../helpers/envHelpers.js";
-import {GetExercisesResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/routes/exercises/GetExercises";
 import {ErrorResponseMapper} from "@gym-buddy/requestresponsetypes/mappers/errorResponse";
 import {
-    PostExerciseRequestMapper,
     PostExerciseResponseMapper
 } from "@gym-buddy/requestresponsetypes/mappers/routes/exercises/PostExercise";
 
